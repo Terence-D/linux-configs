@@ -1,0 +1,17 @@
+#Place this in /etc/systemd/system/sshkeepawake.service
+#sudo systemctl start sshkeepawake.service
+#sudo systemctl enable sshkeepawake.service
+#sudo systemctl daemon-reload
+
+[Unit]
+Description=Check for running SSH sessions and, if any, inhibit sleep
+Before=sleep.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "if [ `who | grep -c pts/` -gt 0 ]; then echo stayawake; exit 1; else exit 0; fi"
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+RequiredBy=sleep.target
