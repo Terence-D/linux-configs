@@ -1,0 +1,12 @@
+[Unit]
+Description=Inhibit suspend if Jellyfin is streaming media
+Before=sleep.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /script/path/jellyfin-awake/jellyfin-keepawake.py
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+RequiredBy=sleep.target
